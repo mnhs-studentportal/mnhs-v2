@@ -1,6 +1,7 @@
-<?php 
+<?php
+$data = $_GET['data_id'];
 
-
+require_once 'core/db_connect.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +33,7 @@ include "components/sidenav.php";
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Enrollment/ Student Grades</h1>
+            <h1 class="m-0">Enrollment/ Grades </h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -46,45 +47,150 @@ include "components/sidenav.php";
           <div class="col-md-11">
             <div class="card">
               <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#new" data-toggle="tab">Search Student</a></li>
-                      <!-- <li class="nav-item"><a class="nav-link " href="#list" data-toggle="tab">Enrollment List</a></li> -->
-                      
-                    </ul>
+
                   </div><!-- /.card-header -->
                   <div class="card-body">
                     <div class="tab-content">
                       <div class="tab-pane active" id="new">
-                        <div class="col-lg-11">
                         <div class="row">
-                        <div class="col-md-6">
-                        <div class="input-group input-group-lg" >
-                              <input type="text" class="form-control" id="searchBar" onkeypress="enterKeyPressed(event)">
-                              <span class="input-group-append">
-                                
-                                <button type="button" class="btn btn-lg btn-default" id="btnSearch">
-                                    <i class="fa fa-search"> Search</i>
-                                </button>
-                              </span>
+                        <div class="col-lg-4">
+                        <div class="row">
+                        <div class="col-md-12">
+                        <div class="card card-success">
+                        <div class="card-header">
+                        <h3 class="card-title">Student Information</h3>
+                        </div>
+                        <div class="card-body">
+                        
+                        <?php
+                     
+                      
+                        
+                        $data_id= str_replace(' ', '', $data);
+                        $sql = "SELECT * FROM registration WHERE gu_id = '".$data."'"; 
+                        
+                            $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+
+                            while ($row = $result->fetch_assoc()) {
+                      
+                        ?>
+                        <dl>
+                            <dt>Name:</dt>
+                            <dd> <?php echo $row['first_name']?> <?php echo $row['middle_name']?> <?php echo $row['last_name']?></dd>
+                            <dt>Address:</dt>
+                            <dd><?php echo $row['home_address']?>, <?php echo $row['province']?>, <?php echo $row['country']?> <?php echo $row['zipcode']?></dd>
+                           
+                            <dt>Age:</dt>
+                            <dd><?php echo $row['age']?></dd>
+                            
+                            <dt>Birth Date:</dt>
+                            <dd><?php echo $row['bdate']?></dd>
+
+                            <dt>Gender:</dt>
+                            <dd><?php echo $row['gender']?></dd>
+                            
+                            <dt>Year level:</dt>
+                            <dd></dd>
+                            
+                        </dl>
+                        <?php
+                        }
+                    }
+                        ?>
+                       
+                        </div>
+                        <div class="card-footer">
+                        <button class="btn btn-lg btn-success"id="new_enrollment" style="display: none;">New Enrollment</button>
+                        </div>
                         </div>
                         </div>
                         
                         
                         </div>
+                        </div>
+                        <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                            <div>
+                            <div class="card card-success">
+                            <div class="card-header">
+                            <h3 class="card-title">Enrollment Information</h3>
+                            </div>
+                            <div style="text-align: center;" >
+                            <img src="../images/loading.gif" style="width: 50%;display: none;" id="loading">
+                            </div>
+                        
+                            
+                            
+        
+                            </div>
+                            <div class="card-footer" style="text-align: center;">
+                            <div class="card-body" id="loadEnrollmentData" style="display: none;">
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            
+                           
+                        
+                        </div>
+                        </div>
+                        <div class="col-lg-12" style="display: none;" id="cur_list">
+                        <?php 
+
+                        require_once 'core/db_cofig.php'; 
+                        require_once 'core/_list_controller.php';
+                            $db = new dbController();
+                            $conn = $db->connect();
+                            $dCtrl  =   new CurriculumnListController($conn);
+                            $usersdata = $dCtrl->index();
+                        ?>
+                            <div class="card card-success">
+                            <div class="card-header">
+                            <h3 class="card-title">List of Curriculumn</h3>
+                            </div>
+                            <div style="text-align: center;" >
+                            </div>
+                            </div>
+                            <div class="card-footer" style="text-align: center;">
+                            <div class="card-body" id="loadEnrollmentData" >
+                            <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Curriculumn Id</th>
+                    <th>Curriculumn Tittle</th>
+                    <th>Curriculumn Details</th>
+                    <th>Curriculumn Year Level</th>
+                    <th>Actions</th>
+                    
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <?php 
+                      foreach($usersdata as $item) : ?>
+                        <tr id="<?php echo $item['curriculumn_guid']; ?>">
+                          <td><?php echo $item['curriculumn_guid']; ?></td>
+                          <td><?php echo $item['curriculumn_tittle']?></td>
+                          <td><?php echo $item['curriculumn_details']; ?></td>
+                          <td><?php echo $item['year_lvl']; ?></td>
+                          <td>
+                          <button type="button" class="btn btn-block btn-outline-primary btn_enroll_">Enroll</button>
+                          </td>
+                        </tr>
+
+                      <?php endforeach; ?>	
+                    </tbody>	
+                  <tfoot>
+             
+                  </tfoot>
+                </table>
+                            </div>
+                            </div>
+                            </div>
                         </div>
 
-                        <br><br><br><br>
-                        <div class="col-md-11" >
-                        <img src="../images/loading.gif" style="display: none;" id="loading">
-                              <div class="card" id="searchpanel">
-                                  <div class="card-body" >
-                                    
-                                    <div class="row" id="searchResults">
-                                           
-                                    </div>
-                                  </div>
-                              </div>
-                          </div>
                       </div>
                   <!-- /.tab-pane -->
                     </div>
@@ -148,71 +254,64 @@ include "components/sidenav.php";
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
-  $("#searchpanel").hide();
- function enterKeyPressed(event) {
-  $("#loading").show();
-  var dataset = document.getElementById('searchBar').value;
-      if (event.keyCode == 13) {
-         console.log("Enter key is pressed");
-         
-         searchData(data);
-         return true;
-      } else {
-         return false;
+     $('#loading').show();
+     $('#loadEnrollmentData').hide(); 
+    loadEnrollmentData_();
+   
+        
+      function loadEnrollmentData_(){
+        var data = '<?php echo $data?>';
+          $.ajax({
+            url : "core/_get_enrollment_data.php",
+            method: "POST",
+            data : {data : data},
+            success : function (res){
+              
+                if (res == 0) {
+                    
+                    $('#loadEnrollmentData').load("core/_note_enrolled.php");
+                    new_enrollment();
+                    setTimeout(function() {
+                        $("#new_enrollment").show();
+                        $("#loading").hide();
+                        $('#loadEnrollmentData').show();
+                            }, 2000);
+                } else {
+                    $('#loadEnrollmentData').html(res);
+                    console.log(res);
+                }
+            }
+        });
       }
-   }
-  $("#searchBar").keyup(function(){
-    var data = $(this).val();
-    if (data != '') {
-      searchData(data);
-    } 
-  });
-  $("#btnSearch").on('click',function(){
-    var data = $("#searchBar").val();
-    if (data != '') {
-      searchData(data);
-    } 
-  });
-  function searchData(data){
-    $("#loading").show();
-    $.ajax({
-      url : "core/_search_student.php",
-      method : "POST",
-      data : {data : data},
-      success : function (resdata){
-      
-        $("#searchResults").html(resdata);
-        student_options();
-        //document.getElementById('searchBar').value = '';
-        setTimeout(function() {
-          $("#searchpanel").show();
-          $("#loading").hide();
-            }, 1000);
-      }
-    });
-  }
+     
+    function new_enrollment(){
+        $("#new_enrollment").on('click',function(){
+        
+            $("#cur_list").show();
+        });
 
-  function student_options(){
-    $('.btn_enroll').on('click',function(){
-      var en_id = $(this).attr('id');
-      alert("enroll"+ en_id);
-    });
-
-    $('.btn_grades').on('click',function(){
-      var gd_id = $(this).attr('id');
-      alert("grades"+ gd_id);
-    });
-
-    $('.btn_view').on('click',function(){
-      var vw_id = $(this).attr('id');
-      alert("view"+ vw_id);
-    });
-    
-  }
+        $(".btn_enroll_").on('click',function(){
+            var stud_id =  '<?php echo $data?>';
+            var cur_yearlvl = $(this).closest('tr').children('td:eq(3)').text();
+            var cur_id = $(this).closest('tr').attr('id');
+            var status = 'New';
+            
+            $.ajax({
+                url : "core/_add_new_enrollment.php",
+                method : "POST",
+                data : {stud_id : stud_id , cur_yearlvl : cur_yearlvl , cur_id : cur_id , status : status},
+                success : function(res){
+                    console.log(res);
+                    loadEnrollmentData_();
+                }
+            });
+            
+        });
+    }
   $(function () {
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print"],
+   
  
       
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
@@ -230,50 +329,10 @@ include "components/sidenav.php";
   });
 
      $("#enrollment-nav").addClass("active");
-    loadUserList();
+   
 
     flatpickr("#bdate", {});
 
-    $("#register").on('click', function(e){
-        e.preventDefault();
-        var datas  =  {
-            fname : document.getElementById("fname").value,
-            lname : document.getElementById("lname").value,
-            mname : document.getElementById("mname").value,
-            age : document.getElementById("age").value,
-            bdate : document.getElementById("bdate").value,
-            homeadd : document.getElementById("homeadd").value,
-            zipcode : document.getElementById("zipcode").value,
-            province : document.getElementById("province").value,
-            country : document.getElementById("country").value,
-            phonenumber : document.getElementById("phone_number").value,
-            email : document.getElementById("email").value,
-            usertype : document.querySelector("#usertype").value,
-            gender : document.querySelector('input[name="gender"]:checked').value
-
-        }
-        $.ajax({
-            type : 'post',
-            url : '../config/_register.php',
-            data : datas,
-            success : function (result){
-                console.log(result)
-                $("#resmessage").text(result);
-            }
-        });
-    });
-
-
-    function loadUserList(){
-      $.ajax({
-        url : "core/_user_list.php",
-        method : "GET",
-        success : function (res){
-          console.log(res);
-        } 
-      });
-      
-    }
 </script>
 </body>
 </html>

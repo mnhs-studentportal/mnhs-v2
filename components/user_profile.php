@@ -1,6 +1,6 @@
 <?php
 include "../config/db_connect.php";
-
+include "../config/sessions.php";
 
 $iid = $_SESSION["id"];
 $sql = "select * from registration where user_id = $iid";
@@ -40,7 +40,7 @@ $sql = "select * from registration where user_id = $iid";
             if ($iid == 1) {
               echo '
               <div class="d-flex justify-content-center mb-2">
-              <a class="btn btn-info " href="admin">Admin Panel?</a>
+              <a class="btn btn-info " href="admin">Go to Admin Panel ?</a>
               </div>
               ';
             } else {

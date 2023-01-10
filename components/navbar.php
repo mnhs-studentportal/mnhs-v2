@@ -1,7 +1,15 @@
 
 <?php
 include "../config/sessions.php";
-
+$iid = $_SESSION["id"];
+$usql = "select role_type from users
+where id = $iid";
+$ures = $conn->query($usql);
+if($ures->num_rows > 0){
+  while($urows = $ures->fetch_assoc()){
+    $this_id = $urows['role_type'];
+  }
+}
 ?>
 <div class="container">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary main-nav navbar-togglable">
@@ -18,8 +26,9 @@ include "../config/sessions.php";
 <ul class="navbar-nav " id="navsoutlet">
 <?php
     $iid = $_SESSION["id"];
+
     $sql = "select * from user_rules
-    LEFT JOIN menu_setup on user_rules.rules = menu_setup.id where user_id = $iid";
+    LEFT JOIN menu_setup on user_rules.rules = menu_setup.id where user_id = $this_id";
         $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {

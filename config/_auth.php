@@ -1,5 +1,6 @@
 <?php
 include "db_connect.php";
+include "sessions.php";
 
 
 $user = $_POST['user'];
@@ -19,7 +20,7 @@ if (!$user & !$pass) {
         if ($result) {
         // output data of each row
         while($row = $result->fetch_assoc()) {
-           $userid = $row['id'];
+           $userid = $row['user_guid'];
            $_SESSION["id"] = $userid;
         }
 
