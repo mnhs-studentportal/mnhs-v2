@@ -67,7 +67,9 @@ include "components/sidenav.php";
                       
                         
                         $data_id= str_replace(' ', '', $data);
-                        $sql = "SELECT * FROM registration WHERE gu_id = '".$data."'"; 
+                        $sql = "SELECT * FROM registration
+                        LEFT JOIN enrollment_setup ON enrollment_setup.student_guid = registration.gu_id 
+                        WHERE gu_id = '".$data."'"; 
                         
                             $result = $conn->query($sql);
 
@@ -92,7 +94,7 @@ include "components/sidenav.php";
                             <dd><?php echo $row['gender']?></dd>
                             
                             <dt>Year level:</dt>
-                            <dd></dd>
+                            <dd><?php echo $row['year_level']?></dd>
                             
                         </dl>
                         <?php
@@ -103,6 +105,9 @@ include "components/sidenav.php";
                         </div>
                         <div class="card-footer">
                         <button class="btn btn-lg btn-success"id="new_enrollment" style="display: none;">New Enrollment</button>
+                        </div>
+                        <div class="card-footer">
+                        <button class="btn btn-lg btn-info"id="view_subjects" style="display: none;" onclick="viewSubjects()">Load Subjects</button>
                         </div>
                         </div>
                         </div>
@@ -147,16 +152,15 @@ include "components/sidenav.php";
                             $dCtrl  =   new CurriculumnListController($conn);
                             $usersdata = $dCtrl->index();
                         ?>
-                            <div class="card card-success">
-                            <div class="card-header">
-                            <h3 class="card-title">List of Curriculumn</h3>
-                            </div>
-                            <div style="text-align: center;" >
-                            </div>
-                            </div>
-                            <div class="card-footer" style="text-align: center;">
-                            <div class="card-body" id="loadEnrollmentData" >
-                            <table id="example1" class="table table-bordered table-striped">
+            <div class="card card-success">
+               <div class="card-header">
+                <h3 class="card-title">List of Curriculumn</h3>
+              </div>
+    
+            </div>
+            <div class="card-footer" style="text-align: center;">
+            <div class="card-body" id="loadEnrollmentData" >
+            <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Curriculumn Id</th>
@@ -189,9 +193,78 @@ include "components/sidenav.php";
                             </div>
                             </div>
                             </div>
+
+                           <div class="col-lg-12">
+                           <div class="card card-success">
+                              <div class="card-header">
+                                Subjects
+                              </div>
+                              <div class="card-body">
+                              <div class="container">
+                                  <div class="col-md-12">
+                                    <div class="tabbable">
+                                    <ul class="nav justify-content-center sub-tabs" id="load_subject_title">
+                                         
+                                        </ul>
+                                      <div class="tab-content">
+                                        <div class="tab-pane active" id="tab1">
+                                          <div class="d-flex justify-content-between">
+                                          <div id="load_gradedsubjects">
+                                            
+                                            </div>
+                                            <div class="pull-right">
+                                                <button id="btn_add_grade" onclick="checkGradeTerm()"
+                                                type="button" class="btn btn-primary" data-target="#gradeModal"
+                                                >Add Grade</button>
+                                              </div>
+                                          </div>
+                                          
+                                        </div>
+                                       
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                           </div>
                         </div>
 
                       </div>
+                      
+<!-- Grades Modal -->
+<div class="modal fade" id="gradeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add grade</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Grading Term</label>
+          <input type="text" class="form-control" id="curGrading" readonly>
+          <br>
+          <label for="exampleInputEmail1">Grade</label>
+          <input type="number" class="form-control" id="curGrade"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+          />
+        </div>
+        
+        
+        
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="addGrades()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
                   <!-- /.tab-pane -->
                     </div>
                 <!-- /.tab-content -->
@@ -254,10 +327,10 @@ include "components/sidenav.php";
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
-     $('#loading').show();
-     $('#loadEnrollmentData').hide(); 
+    // $('#loading').show();
+     //$('#loadEnrollmentData').hide(); 
     loadEnrollmentData_();
-   
+    $('#btn_add_grade').hide();
         
       function loadEnrollmentData_(){
         var data = '<?php echo $data?>';
@@ -271,14 +344,19 @@ include "components/sidenav.php";
                     
                     $('#loadEnrollmentData').load("core/_note_enrolled.php");
                     new_enrollment();
-                    setTimeout(function() {
-                        $("#new_enrollment").show();
-                        $("#loading").hide();
-                        $('#loadEnrollmentData').show();
-                            }, 2000);
+                    $("#new_enrollment").show();
+                    // setTimeout(function() {
+                    //     $("#new_enrollment").show();
+                    //     $("#loading").hide();
+                    //     $('#loadEnrollmentData').show();
+                    //         }, 2000);
                 } else {
+                  $('#loadEnrollmentData').show();
                     $('#loadEnrollmentData').html(res);
-                    console.log(res);
+                    $("#new_enrollment").hide();
+                    $("#view_subjects").show();
+                    //var ress = JSON.parse(res);
+                    //alert(res);
                 }
             }
         });
@@ -307,6 +385,109 @@ include "components/sidenav.php";
             });
             
         });
+    }
+    function viewSubjects(){
+      var stud_id_sub = '<?php echo $data?>';
+      $.ajax({
+        url : "core/_get_enrollment_subjects.php",
+        method : 'POST',
+        data : {data : stud_id_sub},
+        success : function(res){
+          $("#load_subject_title").html(res);
+         // alert(res);
+         loadSubjects();
+         $('#btn_add_grade').show();
+        }
+
+      });
+    }
+
+    let set_sub_ids, set_en_ids, set_cur_ids, set_stud_id;
+    function loadSubjects(){
+      $(".load_subjects").on('click', function(){
+        var student_id = '<?php echo $data?>';
+        var sub_id = $(this).attr('data-subid');
+        var en_id = $(this).attr('data-enid');
+        var cur_id = $(this).attr('data-curid');
+        set_sub_ids = sub_id;
+        set_en_ids = en_id;
+        set_cur_ids = cur_id;
+        set_stud_id = student_id;
+      $.ajax({
+        url : 'core/_get_enrollment_subjects_data.php',
+        method : 'POST',
+        data : { sub_id : sub_id , en_id : en_id},
+        success : function (res){
+          if (!res == 0) {
+            $('#load_gradedsubjects').html(res);
+           // checkGradeTerm(sub_id, en_id);
+          } else {
+            alert(res);  
+          }
+          
+        }
+      });
+      });
+    }
+    function checkGradeTerm(){
+
+      //alert(set_en_ids);
+      if (set_sub_ids == null && set_en_ids == null) {
+        alert("Please select a subject")
+      } else {
+        $.ajax({
+        url : 'core/_get_enrollment_subjects_gradeterm.php',
+        method : 'POST',
+        data : { sub_id : set_sub_ids , en_id : set_en_ids},
+        success : function (res){
+       // alert(res);
+        document.getElementById('curGrading').value = res;
+        // $("#curGrading").value(res);
+        if (!res == 0) {
+          $("#gradeModal").modal('show');    
+        } else {
+          alert("Grades are complete in this subject");
+        }
+              }
+      });
+      }
+    }
+    function addGrades(){
+    //alert(set_stud_id +" | "+ set_cur_ids);
+      var curgrading = document.getElementById('curGrading').value;
+      var curgrade = document.getElementById('curGrade').value;
+      if (curgrade.length == 0) {
+        alert('Please input a grade');
+      } else {
+        $.ajax({
+          url : 'core/_add_grade.php',
+          method : 'POST',
+          data : {en_ids : set_en_ids, cur_ids : set_cur_ids, stud_ids : set_stud_id, sub_ids : set_sub_ids, curgrading : curgrading, curgrade: curgrade},
+          success : function(res){
+            $("#gradeModal").modal('hide');  
+            alert(res);
+            reloadSubjects();
+          }
+        });
+      }
+      
+    }
+
+    function reloadSubjects(){
+      $.ajax({
+        url : 'core/_get_enrollment_subjects_data.php',
+        method : 'POST',
+        data : { sub_id : set_sub_ids , en_id : set_en_ids},
+        success : function (res){
+          if (!res == 0) {
+            $('#load_gradedsubjects').html(res);
+           // checkGradeTerm(sub_id, en_id);
+          } else {
+            alert(res);  
+          }
+          
+        }
+      });
     }
   $(function () {
     $("#example1").DataTable({

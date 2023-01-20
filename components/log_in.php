@@ -50,6 +50,7 @@ include "../config/sessions.php";
             </div> <!-- / .row -->
         </div> 
 <script>
+      
            $("#login_").on('click',function(){
     
             let user = document.getElementById('uname').value;
@@ -61,7 +62,8 @@ include "../config/sessions.php";
             data : {"user" : user, "pass": pass},
             success : function (res){
                 $('#resmessages').html(res);
-                loginform(<?php echo $_SESSION['id']?>)
+                //loginform(<?php echo $_SESSION['id']?>);
+              
                 window.location.reload();
             }
         });

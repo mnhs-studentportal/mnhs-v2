@@ -88,7 +88,15 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
+.sub-tabs {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: -webkit-box;
+  display: -moz-box;
+}
+.sub-tabs>li {
+  float: none;
+}
 hr {
   margin: 1rem 0;
   color: inherit;

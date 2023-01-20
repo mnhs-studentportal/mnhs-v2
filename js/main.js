@@ -11,7 +11,8 @@
   function selectedUrl(data){
     $("#contents").load("components/"+data+".php");
   } 
-  function loginform(data){
+function loginform(data) {
+    alert('login form')
     if (data == '2') {
         console.log('user not exist in the session storage')
         $("#contents").load("components/log_in.php");

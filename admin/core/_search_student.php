@@ -3,7 +3,9 @@ include_once "db_connect.php";
 $data = $_POST['data'];
 
 $data_id= str_replace(' ', '', $data);
-$sql = "SELECT * FROM registration WHERE first_name like '%{$data}%' AND profession = 'Student'"; 
+$sql = "SELECT * FROM registration
+LEFT JOIN enrollment_setup ON enrollment_setup.student_guid = registration.gu_id 
+WHERE first_name like '%{$data}%' AND profession = 'Student'"; 
 
     $result = $conn->query($sql);
 
@@ -16,7 +18,7 @@ $sql = "SELECT * FROM registration WHERE first_name like '%{$data}%' AND profess
         $stud_status = '';
         if ($results->num_rows > 0) {
             while($rowss = $results->fetch_assoc()){
-                $stud_status = $rowss['year_lvl'];    
+                $stud_status = $rowss['year_level'];    
             }
         }else{
             $stud_status = 'Not Enrolled';
@@ -51,8 +53,7 @@ $sql = "SELECT * FROM registration WHERE first_name like '%{$data}%' AND profess
                                                   </div>
                                                   <div class="col-sm-3">
                                                   <button type="button" class="btn btn-block btn-outline-secondary btn-flat btn_enroll" id="'.$row['user_id'].'">Enroll</button>
-                                                  <button type="button" class="btn btn-block btn-outline-secondary btn-flat btn_grades" id="'.$row['user_id'].'">Add grades</button>
-                                                  <button type="button" class="btn btn-block btn-outline-secondary btn-flat btn_view" id="'.$row['user_id'].'">View</button>
+                                                 
                                                   </div> 
         ';
     }
@@ -65,3 +66,5 @@ $conn->close();
 
 ?>
 
+<!-- <button type="button" class="btn btn-block btn-outline-secondary btn-flat btn_grades" id="'.$row['user_id'].'">Add grades</button>
+                                                  <button type="button" class="btn btn-block btn-outline-secondary btn-flat btn_view" id="'.$row['user_id'].'">View</button> -->

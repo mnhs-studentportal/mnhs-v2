@@ -20,8 +20,8 @@ if (!$user & !$pass) {
         if ($result) {
         // output data of each row
         while($row = $result->fetch_assoc()) {
-           $userid = $row['user_guid'];
-           $_SESSION["id"] = $userid;
+            $_SESSION["id"] = $row['user_guid'];
+          
         }
 
         echo '
@@ -30,6 +30,7 @@ if (!$user & !$pass) {
         </script>
         ';
         } else {
+        $_SESSION["id"] = 2;
             echo "Incorrenct Credetials";
         }
     

@@ -92,7 +92,7 @@ include "components/sidenav.php";
                             <dd><?php echo $row['gender']?></dd>
                             
                             <dt>Year level:</dt>
-                            <dd></dd>
+                            <dd><?php echo $row['year_level']?></dd>
                             
                         </dl>
                         <?php

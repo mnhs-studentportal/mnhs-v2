@@ -1,26 +1,4 @@
 <?php
-
-
-// $sql = "SELECT * FROM registration
-// LEFT JOIN rule_type_setup on registration.user_type = rule_type_setup.id
-// LEFT JOIN users on registration.user_id = users.user_guid";
-//     $result = $conn->query($sql);
-// $data = array();
-//         if ($result->num_rows > 0) {
-//         // output data of each row
-//         while($row = $result->fetch_assoc()) {
-
-//         $data[] = $row;
-//         }
-//         echo json_encode($data);
-//         } else {
-//         echo "0 results";
-//         }
-//         $conn->close();
-
-
-
-
     class UserListController {
     	// constructor
     	function __construct($conn) {
