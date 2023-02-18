@@ -14,7 +14,6 @@ $sql = "select * from registration where gu_id = '".$iid."'";
         } else {
         echo "0 results";
         }
-
 ?>
 <div class="container">
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary main-nav navbar-togglable">

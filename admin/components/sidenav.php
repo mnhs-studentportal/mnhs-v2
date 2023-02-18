@@ -80,6 +80,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="featured.php" class="nav-link" id="featured-nav">
+              <i class="nav-icon fas fa-file"></i>
+              <p>
+                Featured Images
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="reports.php" class="nav-link" id="report-nav">
               <i class="nav-icon fas fa-print"></i>
               <p>

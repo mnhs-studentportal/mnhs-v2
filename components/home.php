@@ -1,8 +1,8 @@
 <div class="container">
             <div class="row  align-items-center">
                 <!-- featured images -->
-                <div class="col-lg-12" id="featured_images">
-                
+                <div class="col-lg-12">
+                <?php include "featured_image.php";?>
                 </div>
                 <br><br><br>
                 <hr>

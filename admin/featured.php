@@ -25,7 +25,7 @@ include "components/sidenav.php";
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Activities / Events</h1>
+            <h1 class="m-0">Featured Images / Carousel</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -38,15 +38,15 @@ include "components/sidenav.php";
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#list" data-toggle="tab">Current Activities & Events</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#new" data-toggle="tab">Add New Activities / Events</a></li>
-                  <!-- <li class="nav-item"><a class="nav-link" href="#featured_images" data-toggle="tab">Featured Images / Carousel</a></li> -->
+                  <li class="nav-item"><a class="nav-link active" href="#list" data-toggle="tab">Images</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#new" data-toggle="tab">Add New Image</a></li>
+           
                 </ul>
               </div><!-- /.card-header -->
 <div class="card-body">
     <div class="tab-content">
         <div class="active tab-pane" id="list">
-            <div class="row" id="loadupdates">
+            <div class="row" id="loadcarousel">
               
             </div>
         </div>
@@ -54,30 +54,9 @@ include "components/sidenav.php";
                   <div class="tab-pane" id="new">
                     <h3 class="text-danger" id="error"></h3>
                     <form class="form-horizontal" method="post" enctype="multipart/form-data" id="actForm">
-                      <div class="col-sm-6">
-                      <!-- select -->
-                        <div class="form-group">
-                            <label>Select Update Type</label>
-                            <select class="form-control" id="type" name="type" required>
-                            <option value="School Event">School Event</option>
-                            <option value="News">News</option>
-                            </select>
-                        </div>
-                    </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Tittle</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="tittle" name="tittle" placeholder="Activity / Event Tittle" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Details</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" rows="10" name="details" id="details" placeholder="Activity / Event Details" required></textarea>
-                          
-                        </div>
-                  
-                      </div>
+              
+                
+                     
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Photo/Image</label>
                         <div class="col-sm-10 custom-file">
@@ -99,15 +78,6 @@ include "components/sidenav.php";
                         </div>
                       </div>
                     </form>
-                  </div>
-                  <div class="tab-pane" id="featured_images">
-                    <div class="float-right">
-                    <button type="button" class="btn btn-success" id="addNewImage"><i class="nav-icon fas fa-plus"></i> Add Image</button>
-                    </div>
-                    <br>
-                      <div class="row" id="loadcarousel">
-                        
-                      </div>
                   </div>
                   <!-- /.tab-pane -->
                 </div>
@@ -136,28 +106,6 @@ include "components/sidenav.php";
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" id="save_update">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-
-      <div class="modal fade" id="modal-carousel">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Add New Featured Image</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div> 
-            <div class="modal-body" id="modal_content">
-
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
             </div>
           </div>
           <!-- /.modal-content -->
@@ -247,12 +195,9 @@ include "components/sidenav.php";
 <script>
     $(document).ready(function(){
 
-     $("#activity-nav").addClass("active");
-     loadPosts();
+     $("#featured-nav").addClass("active");
+  
      loadCarousel();
-
-     const tittle = document.getElementById("tittle");
-     const details = document.getElementById("details");
      const image = document.getElementById("image");
      const form = document.getElementById('actForm');
      const carouselform = document.getElementById('carouselForm');
@@ -260,14 +205,7 @@ include "components/sidenav.php";
 
      form.addEventListener('submit', (e) => {
         let messages = []
-        if (tittle.value == '' || tittle.value == null) {
-          messages.push('tittle is required');
-          return false;
-        }
-        if (details.value == '' || details.value == null) {
-          messages.push('details is required')
-          return false;
-        }
+
         if (image.value == '' || image.value == null) {
           messages.push('image is required')
           return false;
@@ -296,7 +234,7 @@ include "components/sidenav.php";
                     var vals = $("#actForm")[0];
                         var form_data = new FormData(vals);
                         $.ajax({
-                            url: "core/_newactivity.php",
+                            url: "core/_add_carousel_image.php",
                             method : "POST",
                             // dataType : "JSON",
                             data : form_data,
@@ -305,14 +243,14 @@ include "components/sidenav.php";
                             success : function(res){  
                                 console.log(res);
                                 if (res == 1) {
-                                    bootbox.alert("New Activity/ Event is  created");
+                                    bootbox.alert("New Image Added");
                                     document.getElementById("actForm").reset();
                                     $("#actForm")[0].reset();
                                     $('#preview').html('');
                                 } else {
                                     bootbox.alert("Something went wrong"+res)
                                 }
-                                loadPosts();
+                                loadCarousel();
                                 $("#actForm")[0].reset();
                             }
                         });

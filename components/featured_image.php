@@ -1,23 +1,40 @@
-<div id="demo" class="carousel slide carousel-fade" data-ride="carousel">
 
+
+<div id="demo" class="carousel slide carousel-fade" data-ride="carousel">
+<?php
+include "../config/db_connect.php";
+
+
+    $result = $conn->query("select * from carousel");
+?>
                         <!-- Indicators -->
                         <ul class="carousel-indicators">
-                        <li data-target="#demo" data-slide-to="0" class="active"></li>
-                        <li data-target="#demo" data-slide-to="1"></li>
-                        <li data-target="#demo" data-slide-to="2"></li>
+                            <?php
+                            $i = 0;
+                            foreach($result as $row){
+                                $actives = '';
+                                if($i == 0){
+                                    $actives = 'active'; 
+                            }
+                            ?>
+                        <li data-target="#demo" data-slide-to="<?= $i; ?>" class="<?= $actives;?>"></li>
+                       <?php $i++; }?>
                         </ul>
 
                         <!-- The slideshow -->
                         <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="images/la.jpg" alt="Los Angeles" width="1100" height="500">
+                        <?php
+                            $i = 0;
+                        foreach ($result as $row) {
+                            $actives = '';
+                            if ($i == 0) {
+                                $actives = 'active';
+                            }
+                            ?>
+                        <div class="carousel-item <?= $actives ?>">
+                            <img src="images/<?= $row['img_url'];?>" width="100%" height="500">
                         </div>
-                        <div class="carousel-item">
-                            <img src="images/chicago.jpg" alt="Chicago" width="1100" height="500">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/ny.jpg" alt="New York" width="1100" height="500">
-                        </div>
+                        <?php $i++; }?>
                         </div>
 
                         <!-- Left and right controls -->
