@@ -1,6 +1,6 @@
 
 
-<div id="demo" class="carousel slide carousel-fade" data-ride="carousel">
+<div id="demo" class="carousel slide" data-ride="carousel">
 <?php
 include "../config/db_connect.php";
 

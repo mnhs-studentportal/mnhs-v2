@@ -40,7 +40,9 @@
         </div> 
 <script>
 //load featured images
-
+$('.carousel').carousel({
+  interval: 3000
+})
 $("#featured_images").load("components/featured_image.php");
 $("#loadupdates").load("components/_updates.php");
 $("#loadnews").load("components/_news.php");
