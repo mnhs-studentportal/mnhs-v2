@@ -12,7 +12,7 @@ $sql = "select * from carousel";
             <div class="card">
             <div class="card-header" style="text-align: center;">
 
-            <button type="button" class="btn btn-tool btn-xl btn-delete" id="'.$row['id'].'">
+            <button type="button" class="btn btn-tool btn-xl btn-fdelete" id="'.$row['id'].'">
             <p class="text-danger">Delete</p>
         </button>
             
@@ -37,7 +37,7 @@ $sql = "select * from carousel";
 ?>
 
 <script>
-     $(".btn-delete").on("click", function(){
+     $(".btn-fdelete").on("click", function(){
             var item_id = $(this).attr("id");
             bootbox.confirm({
                 message: "Are you sure to delete this item?",
@@ -54,19 +54,19 @@ $sql = "select * from carousel";
                 callback: function (result) {
                   if (result) {
                     $.ajax({
-                        url: "core/_delete_activity.php",
+                        url: "core/_delete_image.php",
                         method : "POST",
                         data : {item_id : item_id},
                         success : function(res){
                             bootbox.alert(res);
-                            $("#loadupdates").load("core/_updates.php");
+                            $("#loadcarousel").load("core/_carousel.php");
                         }
                      });
                   } else {
                     bootbox.cancel
                   }
                     console.log('This was logged in the callback: ' + result);
-                    $("#loadupdates").load("core/_updates.php");
+                    $("#loadcarousel").load("core/_carousel.php");
                 }
             });
             

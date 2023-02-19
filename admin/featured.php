@@ -258,7 +258,7 @@ include "components/sidenav.php";
                     bootbox.cancel
                   }
                     console.log('This was logged in the callback: ' + result);
-                    $("#loadupdates").load("core/_updates.php");
+                    $("#loadupdates").load("core/_carousel.php");
                 }
             });
         }

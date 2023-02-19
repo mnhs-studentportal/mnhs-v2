@@ -42,7 +42,7 @@ include "../config/db_connect.php";
                         <select class="form-control" id="usertype">
                             <option seelected >Student</option>
                             <option>Faculty</option>
-                            <option>Manaagement</option>
+                           
                         </select>
                         </div> 
                   </div>

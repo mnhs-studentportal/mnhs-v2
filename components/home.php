@@ -33,7 +33,11 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-3">
-                    <h3>Philippine Standard Time</h3>
+                <div id="pst-container">
+                    <div>Philippine Standard Time:</div>
+                    <div id="pst-time"></div>
+                    <div><a href="https://gwhs.i.gov.ph/pst/" id="pst-source" target="_blank">PST Source</a></div>
+                    </div>
                 </div>
                            
             </div> <!-- / .row -->
@@ -46,4 +50,16 @@ $('.carousel').carousel({
 $("#featured_images").load("components/featured_image.php");
 $("#loadupdates").load("components/_updates.php");
 $("#loadnews").load("components/_news.php");
+</script>
+<script type="text/javascript">
+(function(d, eId) {
+	var js, gjs = d.getElementById(eId);
+	js = d.createElement('script'); js.id = 'gwt-pst-jsdk';
+	js.src = "//gwhs.i.gov.ph/pst/gwtpst.js?"+new Date().getTime();
+	gjs.parentNode.insertBefore(js, gjs);
+}(document, 'pst-container'));
+
+var gwtpstReady = function(){
+	new gwtpstTime('pst-time');
+}
 </script>

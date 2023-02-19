@@ -72,8 +72,8 @@ session_start();
  
     </section>
 
- <footer class="section " id="footer">
-   <?php include 'footers.html';?>
+ <footer class="section " id="footer" style="height: 300px">
+   <?php include 'footers.php';?>
  </footer>
 
 

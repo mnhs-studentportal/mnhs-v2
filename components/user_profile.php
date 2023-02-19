@@ -18,6 +18,7 @@ $sql = "select * from registration where gu_id = '".$data_id."'";
        $address = $row['home_address'];
        $email = $row['email'];
        $contactnum = $row['contact_num'];
+    $utype = $row['user_type'];
     }
         } else {
         echo "0 results";
@@ -40,47 +41,59 @@ $sql = "select * from registration where gu_id = '".$data_id."'";
                 <a class="btn btn-danger " href="config/_logout.php">Logout?</a>
             </div>
             <?php
-            if ($iid == 1) {
+            if ($utype == 1 || $utype == 4 ) {
               echo '
               <div class="d-flex justify-content-center mb-2">
               <a class="btn btn-info " href="admin">Go to Admin Panel ?</a>
               </div>
+
+              <div class="card mb-4 mb-lg-0">
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush rounded-3">
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_profile">
+                    <i class="fas fa-user fa-lg text-warning"></i>
+                    <p class="mb-0">My Profile</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
               ';
             } else {
-              echo '';
+              echo '
+              <div class="card mb-4 mb-lg-0">
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush rounded-3">
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_profile">
+                    <i class="fas fa-user fa-lg text-warning"></i>
+                    <p class="mb-0">My Profile</p>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_grades">
+                    <i class="fas fa-address-book  fa-lg" style="color: #333333;"></i>
+                    <p class="mb-0">My Grades</p>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_classschedule">
+                    <i class="fas fa-calendar  fa-lg" style="color: #55acee;"></i>
+                    <p class="mb-0">My Class Schedule</p>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_certificates">
+                    <i class="fas fa-folder-open fa-lg" style="color: #ac2bac;"></i>
+                    <p class="mb-0">My Certificates</p>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_availablesubject">
+                    <i class="fas fa-list-alt  fa-lg" style="color: #3b5998;"></i>
+                    <p class="mb-0">Available Subject</p>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_downloadables">
+                    <i class="fas fa-print  fa-lg" style="color: #3b5998;"></i>
+                    <p class="mb-0">Downloadables</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+              ';
             }
             
             ?>
-          </div>
-        </div>
-        <div class="card mb-4 mb-lg-0">
-          <div class="card-body p-0">
-            <ul class="list-group list-group-flush rounded-3">
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_profile">
-                <i class="fas fa-user fa-lg text-warning"></i>
-                <p class="mb-0">My Profile</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_grades">
-                <i class="fas fa-address-book  fa-lg" style="color: #333333;"></i>
-                <p class="mb-0">My Grades</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_classschedule">
-                <i class="fas fa-calendar  fa-lg" style="color: #55acee;"></i>
-                <p class="mb-0">My Class Schedule</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_certificates">
-                <i class="fas fa-folder-open fa-lg" style="color: #ac2bac;"></i>
-                <p class="mb-0">My Certificates</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_availablesubject">
-                <i class="fas fa-list-alt  fa-lg" style="color: #3b5998;"></i>
-                <p class="mb-0">Available Subject</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3 profilee_nav" id="_downloadables">
-                <i class="fas fa-print  fa-lg" style="color: #3b5998;"></i>
-                <p class="mb-0">Downloadables</p>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

@@ -31,7 +31,7 @@ if (!$_POST['usertype'] & !$_POST['fname'] & !$_POST['lname'] & !$_POST['age'] &
     } else if($_POST['usertype'] == 'Faculty'){
         $usertype_id = 4;
     }else{
-        $usertype_id = 5;
+        $usertype_id = 2;
     }
     
 $sql = "INSERT INTO registration (

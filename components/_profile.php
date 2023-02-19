@@ -18,6 +18,7 @@ $sql = "select * from registration where gu_id = '".$data_id."'";
        $address = $row['home_address'];
        $email = $row['email'];
        $contactnum = $row['contact_num'];
+       $utype = $row['user_type'];
     }
         } else {
         echo "0 results";
